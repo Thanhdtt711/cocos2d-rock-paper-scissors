@@ -1,0 +1,16 @@
+{
+  /* Base configuration. Do not edit this field. */
+  "extends": "./temp/tsconfig.cocos.json",
+  /* Add your custom configuration here. */
+  "compilerOptions": {
+    "strict": false,
+    "noImplicitAny": true,
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "target": "ESNext",
+    "allowSyntheticDefaultImports": true
+  },
+  "include": [
+    "assets/**/*.ts"
+  ],
+}

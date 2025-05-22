@@ -1,0 +1,19 @@
+{
+  "name": "Rock-Paper-Scissors",
+  "uuid": "77ce2447-69b8-4353-9376-3d119cb75a56",
+  "creator": {
+    "version": "3.8.6"
+  },
+  "dependencies": {
+    "@meshsdk/core": "^1.9.0-beta.49",
+    "axios": "^1.9.0",
+    "lodash-es": "^4.17.21",
+    "mitt": "^3.0.1",
+    "socket.io-client": "^4.8.1",
+    "util": "^0.12.5"
+  },
+  "devDependencies": {
+    "@types/lodash-es": "^4.17.12",
+    "@types/node": "^22.15.21"
+  }
+}

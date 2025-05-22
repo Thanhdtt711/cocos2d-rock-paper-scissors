@@ -1,6 +1,7 @@
 import {
 	_decorator,
 	Component,
+	director,
 	instantiate,
 	Node,
 	Prefab,
@@ -53,46 +54,37 @@ export class Lobby extends Component {
 		this.lobbyInteraction.renderLobbyList = this.renderLobbyList.bind(this)
 		this.lobbyInteraction.setLobbyItems = this.setLobbyItems.bind(this)
 		this.lobbyInteraction.setLoading = this.setLoading.bind(this)
-
-		this.setLoading(true)
-
-		this.lobbyInteraction.onMessage = async (data) => {
-			if (data.type === 'onClickTestBtn') {
-				console.log('[Cocos Script] onClickTestBtn', data)
-				;(window as any).lobby.setLoading(true)
-
-				setTimeout(() => {
-					;(window as any).lobby.setLobbyItems([
-						{
-							name: 'Lobby 1',
-							betAmount: '5 tADA',
-							requiredPassword: true,
-							isLocked: false,
-							code: '1234',
-							roundTimeMillis: 60000,
-						},
-						{
-							name: 'Lobby 2',
-							betAmount: '10 tADA',
-							requiredPassword: true,
-							isLocked: true,
-							code: '5678',
-							roundTimeMillis: 60000,
-						},
-						{
-							name: 'Lobby với 1 cái tên cực dài',
-							betAmount: '100 t₳',
-							requiredPassword: true,
-							isLocked: true,
-							code: '5678',
-							roundTimeMillis: 60000,
-						},
-					])
-					;(window as any).lobby.renderLobbyList()
-					;(window as any).lobby.setLoading(false)
-				}, 3000)
-			}
-		}
+		;(window as any).lobby.setLoading(true)
+		setTimeout(() => {
+			;(window as any).lobby.setLobbyItems([
+				{
+					name: 'Lobby 1',
+					betAmount: '5 tADA',
+					requiredPassword: true,
+					isLocked: false,
+					code: '1234',
+					roundTimeMillis: 60000,
+				},
+				{
+					name: 'Lobby 2',
+					betAmount: '10 tADA',
+					requiredPassword: true,
+					isLocked: true,
+					code: '5678',
+					roundTimeMillis: 60000,
+				},
+				{
+					name: 'Lobby với 1 cái tên cực dài',
+					betAmount: '100 t₳',
+					requiredPassword: true,
+					isLocked: true,
+					code: '5678',
+					roundTimeMillis: 60000,
+				},
+			])
+			;(window as any).lobby.renderLobbyList()
+			;(window as any).lobby.setLoading(false)
+		}, 3000)
 	}
 
 	protected createLobby(): void {
@@ -160,6 +152,7 @@ export class Lobby extends Component {
 			Node.EventType.TOUCH_END,
 			() => {
 				console.log('Join Lobby', data)
+				director.loadScene('game-play')
 			},
 			this
 		)

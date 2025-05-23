@@ -1,9 +1,19 @@
-import { _decorator, Component, director, instantiate, Node, Prefab, UIOpacityComponent } from 'cc'
+import {
+	_decorator,
+	Button,
+	Component,
+	director,
+	instantiate,
+	Node,
+	Prefab,
+	UIOpacityComponent,
+} from 'cc'
 const { ccclass, property } = _decorator
 
 import { default as jsSha256 } from 'js-sha256'
 import { Choice } from '../common/types/choice.type'
 import { ChoiceBtnScript } from './prefabs/ChoiceBtnScript'
+import { PrimaryBtnScript } from './gameplay/PrimaryBtnScript'
 
 class GamePlayer {
 	choice: Choice = Choice.None
@@ -55,14 +65,14 @@ export class GamePlayManager extends Component {
 	uiController: Node | null = null
 
 	@property(Node)
-	rockBtn: Node | null = null
+	rockBtnNode: Node | null = null
 	@property(Node)
-	paperBtn: Node | null = null
+	paperBtnNode: Node | null = null
 	@property(Node)
-	scissorsBtn: Node | null = null
+	scissorsBtnNode: Node | null = null
 
 	@property(Prefab)
-	testChoiceBtnPrefab: Prefab | null = null
+	choiceBtnPrefab: Prefab | null = null
 
 	//
 	playerA: GamePlayer = new GamePlayer()
@@ -70,9 +80,9 @@ export class GamePlayManager extends Component {
 	gameState: GameState = GameState.WaitingForPlayers
 	choiceMapper: Record<Choice, Node> = {
 		[Choice.None]: null,
-		[Choice.Rock]: this.rockBtn,
-		[Choice.Paper]: this.paperBtn,
-		[Choice.Scissors]: this.scissorsBtn,
+		[Choice.Rock]: this.rockBtnNode,
+		[Choice.Paper]: this.paperBtnNode,
+		[Choice.Scissors]: this.scissorsBtnNode,
 	}
 
 	start() {}
@@ -80,26 +90,34 @@ export class GamePlayManager extends Component {
 	onLoad() {
 		this.navBackBtn?.on(Node.EventType.TOUCH_END, this.onClickBackBtn, this)
 		this.readyBtn?.on(Node.EventType.TOUCH_END, this.onClickReadyBtn, this)
-		this.rockBtn?.on(Node.EventType.TOUCH_END, () => this.onClickChoice(Choice.Rock), this)
-		this.paperBtn?.on(Node.EventType.TOUCH_END, () => this.onClickChoice(Choice.Paper), this)
-		this.scissorsBtn?.on(Node.EventType.TOUCH_END, () => this.onClickChoice(Choice.Scissors), this)
-
-		// const testChoiceBtn = instantiate(this.testChoiceBtnPrefab)
-		// console.log('>>> / testChoiceBtn:', testChoiceBtn)
-
-		// testChoiceBtn.setPosition(0, 0, 0)
-		// this.uiController?.addChild(testChoiceBtn)
-		// testChoiceBtn?.getComponentInChildren(ChoiceBtnScript)?.setType(Choice.Rock)
-		// console.log(testChoiceBtn?.getComponentInChildren(ChoiceBtnScript))
+		this.initChoiceBtn()
 	}
 	update(deltaTime: number) {}
+
+	protected initChoiceBtn() {
+		//
+	}
+
+	protected getChoiceBtn(node: Node) {
+		const button = node?.getComponentInChildren(Button)
+		if (!button) throw new Error('Button not found')
+		console.log('>>> / button:', button)
+		return button
+	}
 
 	protected onClickBackBtn(): void {
 		director.loadScene('game-lobby')
 	}
 
 	protected onClickReadyBtn(): void {
+		console.log('Click Ready Btn')
 		this.playerA.ready()
+
+		this.readyBtn.getComponentInChildren(PrimaryBtnScript)?.setType('CONFIRM')
+
+		this.getChoiceBtn(this.rockBtnNode).interactable = true
+		this.getChoiceBtn(this.paperBtnNode).interactable = true
+		this.getChoiceBtn(this.scissorsBtnNode).interactable = true
 	}
 
 	protected onClickChoice(choice: Choice): void {

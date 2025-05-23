@@ -1,64 +1,117 @@
-import { _decorator, Component, Node, resources, Sprite, SpriteFrame } from 'cc'
+import {
+	_decorator,
+	Button,
+	Component,
+	ImageAsset,
+	Node,
+	resources,
+	Sprite,
+	SpriteFrame,
+	Texture2D,
+	UIComponent,
+} from 'cc'
 import { Choice } from '../../common/types/choice.type'
 const { ccclass, property } = _decorator
 
 @ccclass('ChoiceBtnScript')
 export class ChoiceBtnScript extends Component {
-	@property(Node)
-	button: Node | null = null
+	@property(Button)
+	button: Button | null = null
 
-	isDisabled: boolean = false
-	type: Choice = Choice.None
+	isDisabled: boolean = true
+	type: Choice = Choice.Rock
 
-	sprites: Record<Choice, { enabled: string; disabled: string }> = {
-		[Choice.None]: {
-			enabled: 'res/Textures/game-play/main-controller/rock-btn-active.png',
-			disabled: 'res/Textures/game-play/main-controller/rock-btn-disabled.png',
-		},
+	sprites: Record<
+		Choice.Rock | Choice.Paper | Choice.Scissors,
+		{
+			enabled: string
+			disabled: string
+			enabledSpriteFrame: SpriteFrame | null
+			disabledSpriteFrame: SpriteFrame | null
+		}
+	> = {
 		[Choice.Rock]: {
-			enabled: 'res/Textures/game-play/main-controller/rock-btn-active.png',
-			disabled: 'res/Textures/game-play/main-controller/rock-btn-disabled.png',
+			enabled: 'Textures/game-play/main-controller/rock-btn-active',
+			disabled: 'Textures/game-play/main-controller/rock-btn-disabled',
+			enabledSpriteFrame: null,
+			disabledSpriteFrame: null,
 		},
 		[Choice.Paper]: {
-			enabled: null,
-			disabled: null,
+			enabled: 'Textures/game-play/main-controller/paper-btn-active',
+			disabled: 'Textures/game-play/main-controller/paper-btn-disabled',
+			enabledSpriteFrame: null,
+			disabledSpriteFrame: null,
 		},
 		[Choice.Scissors]: {
-			enabled: null,
-			disabled: null,
+			enabled: 'Textures/game-play/main-controller/scissors-btn-active',
+			disabled: 'Textures/game-play/main-controller/scissors-btn-disabled',
+			enabledSpriteFrame: null,
+			disabledSpriteFrame: null,
 		},
 	}
 
-	start() {}
+	async start() {
+		console.log('ChoiceBtnScript start')
+		for (const item of Object.entries(this.sprites)) {
+			const [key, value] = item
+			value.enabledSpriteFrame = await this.loadSprite(value.enabled)
+			value.disabledSpriteFrame = await this.loadSprite(value.disabled)
+		}
+		this.setType(this.type)
+	}
 
-	onload() {
-		console.log('ChoiceBtnScript onload')
-		resources.load(
-			'res/Textures/game-play/main-controller/rock-btn-disabled.png',
-			SpriteFrame,
-			(err, spriteFrame) => {
-				if (err) {
-					console.error('Failed to load sprite frame:', err)
+	onLoad() {
+		console.log('ChoiceBtnScript onLoad', this.sprites)
 
-					return
-				}
-				const sprite = this.button.getComponent(Sprite)
-				console.log('>>> / sprite:', sprite)
-
-				if (sprite) {
-					sprite.spriteFrame = spriteFrame
-				}
-			}
-		)
+		this.button?.node?.on(Node.EventType.TOUCH_END, this.onClick, this)
+		this.button.transition = Button.Transition.SPRITE
 	}
 
 	update(deltaTime: number) {}
 
+	async loadSprite(path: string): Promise<SpriteFrame> {
+		return new Promise((resolve, reject) => {
+			resources.load(`${path}/spriteFrame`, SpriteFrame, (err, spriteFrame) => {
+				if (err) {
+					reject(err)
+					return
+				}
+				resolve(spriteFrame)
+			})
+		})
+	}
+
 	setType(type: Choice) {
 		this.type = type
-
-		if (type === Choice.Rock) {
-			//
+		if (!this.button) return
+		if (this.type === Choice.Rock) {
+			// this.button.getComponent(Sprite).spriteFrame = this.sprites[this.type].enabledSpriteFrame
+			this.button.normalSprite = this.sprites[this.type].enabledSpriteFrame
+			this.button.hoverSprite = this.sprites[this.type].enabledSpriteFrame
+			this.button.pressedSprite = this.sprites[this.type].enabledSpriteFrame
+			this.button.disabledSprite = this.sprites[this.type].disabledSpriteFrame
+		} else if (this.type === Choice.Paper) {
+			// this.button.getComponent(Sprite).spriteFrame = this.sprites[this.type].enabledSpriteFrame
+			this.button.normalSprite = this.sprites[this.type].enabledSpriteFrame
+			this.button.hoverSprite = this.sprites[this.type].enabledSpriteFrame
+			this.button.pressedSprite = this.sprites[this.type].enabledSpriteFrame
+			this.button.disabledSprite = this.sprites[this.type].disabledSpriteFrame
+		} else if (this.type === Choice.Scissors) {
+			// this.button.getComponent(Sprite).spriteFrame = this.sprites[this.type].enabledSpriteFrame
+			this.button.normalSprite = this.sprites[this.type].enabledSpriteFrame
+			this.button.hoverSprite = this.sprites[this.type].enabledSpriteFrame
+			this.button.pressedSprite = this.sprites[this.type].enabledSpriteFrame
+			this.button.disabledSprite = this.sprites[this.type].disabledSpriteFrame
 		}
+	}
+
+	setDisabled(isDisabled: boolean) {
+		this.isDisabled = isDisabled
+		if (!this.button) return
+		this.button.enabled = !isDisabled
+	}
+
+	onClick() {
+		console.log('ChoiceBtnScript onClick')
 	}
 }

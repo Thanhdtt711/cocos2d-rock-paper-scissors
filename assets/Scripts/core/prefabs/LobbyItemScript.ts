@@ -1,6 +1,6 @@
 import { _decorator, Component, Node, RichText, UIOpacity, UITransform } from 'cc'
-import { Room } from '../common/types/room.type'
-import { formatString } from '../common/utils/useFormat'
+import { Room } from '../../common/types/room.type'
+import { formatString } from '../../common/utils/useFormat'
 const { ccclass, property } = _decorator
 
 @ccclass('LobbyItemScript')

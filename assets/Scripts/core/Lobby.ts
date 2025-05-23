@@ -14,7 +14,7 @@ const { ccclass, property } = _decorator
 
 import { GameInteraction } from '../common/web-interaction'
 import { Room } from '../common/types/room.type'
-import { LobbyItemScript } from './LobbyItemScript'
+import { LobbyItemScript } from './prefabs/LobbyItemScript'
 
 @ccclass('Lobby')
 export class Lobby extends Component {

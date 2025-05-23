@@ -102,10 +102,10 @@
       "y": 0,
       "z": 0
     },
-    "_id": "320M+yCcpAbaNCxLuwQqPI"
+    "_id": "16ZoVHPhBEhpJ5cq5mrYez"
   },
   {
-    "__type__": "1440awG8ZJMRJI540NvU5Gd",
+    "__type__": "f0348pd0H1OHYELM5qZEE2B",
     "_name": "",
     "_objFlags": 0,
     "__editorExtras__": {},
@@ -117,7 +117,7 @@
     "startGameBtn": {
       "__id__": 4
     },
-    "_id": "1cs0v7DL1H/pFTDZW3yj9Y"
+    "_id": "fePDEip7ZF/aDzD2XYeOOi"
   },
   {
     "__type__": "cc.Node",
@@ -294,7 +294,7 @@
     "_priority": 0,
     "_fov": 45,
     "_fovAxis": 0,
-    "_orthoHeight": 360,
+    "_orthoHeight": 449.70266040688574,
     "_near": 0,
     "_far": 2000,
     "_color": {
@@ -596,7 +596,7 @@
     "_string": "",
     "_horizontalAlign": 1,
     "_verticalAlign": 1,
-    "_actualFontSize": 27.40625,
+    "_actualFontSize": 20,
     "_fontSize": 20,
     "_fontFamily": "Arial",
     "_lineHeight": 40,

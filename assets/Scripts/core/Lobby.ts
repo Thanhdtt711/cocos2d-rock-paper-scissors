@@ -12,10 +12,9 @@ import {
 } from 'cc'
 const { ccclass, property } = _decorator
 
-import { RequestFactory } from '../Scripts/common/request-factory'
-import { GameInteraction } from '../Scripts/common/web-interaction'
-import { Room } from '../Scripts/common/types/room.type'
-import { LobbyItemScript } from '../Prefabs/LobbyItemScript'
+import { GameInteraction } from '../common/web-interaction'
+import { Room } from '../common/types/room.type'
+import { LobbyItemScript } from './LobbyItemScript'
 
 @ccclass('Lobby')
 export class Lobby extends Component {

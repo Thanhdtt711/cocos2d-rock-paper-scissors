@@ -1,4 +1,4 @@
-import mitt, { Emitter } from 'mitt'
+import mitt from 'mitt'
 
 type Options = {
 	eventName?: string

@@ -33,6 +33,7 @@ export class PrimaryBtnScript extends Component {
 	}
 
 	public setType(type: 'READY' | 'CONFIRM') {
+		console.log('PrimaryBtnScript setType', type)
 		this._type = type
 		this.textReady.active = type === 'READY'
 		this.textConfirm.active = type === 'CONFIRM'

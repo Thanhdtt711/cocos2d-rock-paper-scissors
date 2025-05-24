@@ -14,6 +14,7 @@ import { default as jsSha256 } from 'js-sha256'
 import { Choice } from '../common/types/choice.type'
 import { ChoiceBtnScript } from './prefabs/ChoiceBtnScript'
 import { PrimaryBtnScript } from './gameplay/PrimaryBtnScript'
+import { AudioControl } from './AudioControl'
 
 class GamePlayer {
 	choice: Choice = Choice.None
@@ -64,6 +65,12 @@ export class GamePlayManager extends Component {
 	@property(Node)
 	uiController: Node | null = null
 
+	@property({
+		type: AudioControl,
+		tooltip: 'add audio controller',
+	})
+	public clip: AudioControl
+
 	@property(Node)
 	rockBtnNode: Node | null = null
 	@property(Node)
@@ -95,7 +102,15 @@ export class GamePlayManager extends Component {
 	update(deltaTime: number) {}
 
 	protected initChoiceBtn() {
-		//
+		this.rockBtnNode.on(Node.EventType.TOUCH_END, () => {
+			this.onClickChoice(Choice.Rock)
+		})
+		this.paperBtnNode.on(Node.EventType.TOUCH_END, () => {
+			this.onClickChoice(Choice.Paper)
+		})
+		this.scissorsBtnNode.on(Node.EventType.TOUCH_END, () => {
+			this.onClickChoice(Choice.Scissors)
+		})
 	}
 
 	protected getChoiceBtn(node: Node) {
@@ -111,8 +126,8 @@ export class GamePlayManager extends Component {
 
 	protected onClickReadyBtn(): void {
 		console.log('Click Ready Btn')
+		this.clip.onAudioQueue(3) // swoosh
 		this.playerA.ready()
-
 		this.readyBtn.getComponentInChildren(PrimaryBtnScript)?.setType('CONFIRM')
 
 		this.getChoiceBtn(this.rockBtnNode).interactable = true

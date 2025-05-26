@@ -15,9 +15,16 @@ const { ccclass, property } = _decorator
 import { GameInteraction } from '../common/web-interaction'
 import { Room } from '../common/types/room.type'
 import { LobbyItemScript } from './prefabs/LobbyItemScript'
+import { AudioControl } from './AudioControl'
 
 @ccclass('Lobby')
 export class Lobby extends Component {
+	@property({
+		type: AudioControl,
+		tooltip: 'add audio controller',
+	})
+	public clip: AudioControl
+
 	@property(Node)
 	lobbyCreateBtn: Node | null = null
 

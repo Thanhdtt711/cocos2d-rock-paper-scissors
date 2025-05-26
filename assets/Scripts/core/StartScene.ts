@@ -1,45 +1,52 @@
-import { _decorator, Component, director, Node,  } from 'cc';
-import { add } from 'lodash-es';
-const { ccclass, property } = _decorator;
+import { _decorator, Component, director, Node } from 'cc'
+import { add } from 'lodash-es'
+import { AudioControl } from './AudioControl'
+const { ccclass, property } = _decorator
 
-declare const io: any;
+declare const io: any
 
 @ccclass('StartScene')
 export class StartScene extends Component {
-    @property(Node)
-    startGameBtn: Node | null = null;
+	@property(Node)
+	startGameBtn: Node | null = null
 
-    start() {
-        this.startGameBtn?.on(Node.EventType.TOUCH_END, this.initGame, this);
-    }
+	@property({
+		type: AudioControl,
+		tooltip: 'add audio controller',
+	})
+	public clip: AudioControl
 
-    update(deltaTime: number) {
-        // console.log('Update', deltaTime)
-    }
+	start() {
+		this.startGameBtn?.on(Node.EventType.TOUCH_END, this.initGame, this)
+	}
 
-    protected onLoad(): void {
-        console.log('OnLoad', add(1, 2));
+	update(deltaTime: number) {
+		// console.log('Update', deltaTime)
+	}
 
-        fetch("https://jsonplaceholder.typicode.com/todos/1")
-        .then((response: Response) => {
-            return response.json()
-        })
-        .then((value) => {
-            console.log(value);
-        })
-            .catch((error) => {
-                console.log(error);
-            });
+	protected onLoad(): void {
+		console.log('OnLoad', add(1, 2))
+		this.clip.onAudioLoop(0) // background music
 
-        console.log('io', io)
-        const socket = io('http://localhost:3000');
-        socket.on('connect', () => {
-            console.log('Connected to server');
-        });
-    }
+		fetch('https://jsonplaceholder.typicode.com/todos/1')
+			.then((response: Response) => {
+				return response.json()
+			})
+			.then((value) => {
+				console.log(value)
+			})
+			.catch((error) => {
+				console.log(error)
+			})
 
-    protected initGame(): void {
-        director.loadScene('game-lobby');
-    }
+		console.log('io', io)
+		const socket = io('http://localhost:3000')
+		socket.on('connect', () => {
+			console.log('Connected to server')
+		})
+	}
+
+	protected initGame(): void {
+		director.loadScene('game-lobby')
+	}
 }
-

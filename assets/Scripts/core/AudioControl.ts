@@ -23,4 +23,19 @@ export class AudioControl extends Component {
 		//play the audio just once
 		this.audioSource.playOneShot(clip)
 	}
+
+	onAudioLoop(index: number) {
+		//place audio clip into the the player
+		let clip: AudioClip = this.clips[index]
+
+		//play the audio loop
+		this.audioSource.clip = clip
+		this.audioSource.loop = true
+		this.audioSource.play()
+	}
+
+	onAudioStop() {
+		//stop the audio
+		this.audioSource.stop()
+	}
 }

@@ -18,12 +18,21 @@ const { ccclass, property } = _decorator
 export class PlayerManager extends Component {
 	@property(Sprite)
 	playerAvatar: Sprite | null = null
+
 	@property(RichText)
 	username: RichText | null = null
 	@property(RichText)
 	walletAddress: RichText | null = null
 	@property(RichText)
 	userCoin: RichText | null = null
+
+	userInfo: User = {
+		username: '',
+		walletAddress: '',
+		avatar: '',
+		coin: 0,
+		coinSymbol: '',
+	}
 
 	start() {}
 
@@ -57,9 +66,12 @@ export class PlayerManager extends Component {
 		new GameInteraction().player.setAvatar('https://i.pravatar.cc/300')
 	}
 
-	protected setUserInfo(data: User): void {
+	public setUserInfo(data: User): void {
+		this.userInfo = data
+
 		this.username.string = data.username
 		this.walletAddress.string = data.walletAddress
-		this.userCoin.string = data.coin.toString()
+		this.userCoin.string = `${data.coin} ${data.coinSymbol}`
+		this.setAvatar(data.avatar)
 	}
 }

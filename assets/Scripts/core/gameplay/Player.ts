@@ -14,6 +14,8 @@ const { ccclass, property } = _decorator
 
 import { Choice } from '../../common/types/choice.type'
 import { default as jsSha256 } from 'js-sha256'
+import { Avatar } from '../prefabs/Avatar'
+import { User } from '../../common/types/user.type'
 
 @ccclass('Player')
 export class Player extends Component {
@@ -21,12 +23,18 @@ export class Player extends Component {
 	usernameText: RichText | null = null
 	@property(RichText)
 	coinAmountText: RichText | null = null
-	@property(Node)
-	avatar: Node | null = null
+	@property(Avatar)
+	avatar: Avatar | null = null
 	@property(Label)
 	readyLabel: Label | null = null
-	@property(SpriteFrame)
-	defaultAvatarSpriteFrame: SpriteFrame | null = null
+
+	userInfo: User = {
+		username: '',
+		walletAddress: '',
+		avatar: '',
+		coin: 0,
+		coinSymbol: '',
+	}
 
 	choice: Choice = Choice.None
 	salt: string
@@ -38,40 +46,13 @@ export class Player extends Component {
 
 	update(deltaTime: number) {}
 
-	public initData({
-		username,
-		coinAmount,
-		avatarUrl,
-	}: {
-		username: string
-		coinAmount: string
-		avatarUrl: string
-	}) {
-		console.log('Init data', { username, coinAmount, avatarUrl })
+	public initData(user: User) {
+		const { username, walletAddress, avatar, coin, coinSymbol } = user
+		this.userInfo = user
 		this.usernameText.string = username
-		this.coinAmountText.string = coinAmount
-		this.setAvatar(avatarUrl)
+		this.coinAmountText.string = `${coin} ${coinSymbol}`
+		this.avatar?.setAvatar(avatar)
 		this.readyLabel.string = 'Waiting for ready...'
-	}
-
-	protected setAvatar(avatarUrl: string): void {
-		if (!avatarUrl || avatarUrl === '') {
-			this.avatar.getComponent(Sprite).spriteFrame = this.defaultAvatarSpriteFrame
-			return
-		}
-		assetManager.loadRemote(avatarUrl, (err, imageAsset) => {
-			if (err) {
-				console.error('Lỗi khi tải avatar:', err)
-				return
-			}
-			if (this.avatar) {
-				const spriteFrame = new SpriteFrame()
-				const texture = new Texture2D()
-				texture.image = imageAsset as ImageAsset
-				spriteFrame.texture = texture
-				this.avatar.getComponent(Sprite).spriteFrame = spriteFrame
-			}
-		})
 	}
 
 	public reset() {
@@ -80,6 +61,7 @@ export class Player extends Component {
 		this.hashedChoice = ''
 		this.isRevealed = false
 		this.isReady = false
+		this.readyLabel.string = 'Waiting for ready...'
 	}
 
 	public setChoice(choice: Choice) {

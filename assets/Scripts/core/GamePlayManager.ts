@@ -19,6 +19,7 @@ import { CountdownController } from './CountdownController'
 import { Navigation } from './gameplay/Navigation'
 import { RoundResultController } from './gameplay/RoundResultController'
 import { Player } from './gameplay/Player'
+import { BackgroundRunner } from '../common/utils/backgroundRunner'
 
 enum GameState {
 	WaitingForPlayers = 'WaitingForPlayers',
@@ -92,27 +93,48 @@ export class GamePlayManager extends Component {
 	}
 
 	protected start() {}
+	protected onLoad() {
+		BackgroundRunner.enableBackgroundRunning((dt: number) => {
+			// Cập nhật logic game, ví dụ: timer hoặc trạng thái
+			director.getScheduler().update(dt)
+		})
+	}
 
 	protected onEnable() {
 		// init event listeners
 		this.primaryBtn.node.on(Node.EventType.TOUCH_END, this.onClickPrimaryBtn, this)
 		this.initChoiceBtn()
+		this.roundResultController?.node.on('replay', () => {
+			this.gameState = GameState.WaitingForPlayers
+		})
+		this.nav.node.on('back', () => {
+			director.loadScene('game-lobby')
+		})
 
 		// init game state
 		this.gameState = GameState.WaitingForPlayers
 		this.playerA.initData({
-			username: 'Player A',
-			coinAmount: `100 tADA`,
-			avatarUrl: '',
+			username: 'Ania9 Vtc',
+			walletAddress: 'addr_test1a...ab1',
+			coin: 100,
+			coinSymbol: 'tADA',
+			avatar: 'https://i.imgur.com/74W9HOS.jpeg',
 		})
 		this.playerB.initData({
-			username: 'Player B',
-			coinAmount: `120 tADA`,
-			avatarUrl: '',
+			username: 'Sơn Tùng M-TP',
+			walletAddress: 'addr_test1a...af9',
+			coin: 124,
+			coinSymbol: 'tADA',
+			avatar: 'https://i.imgur.com/BWmtZzG.jpeg',
 		})
 	}
 
 	protected update(deltaTime: number) {}
+
+	onDestroy() {
+		// Tắt chạy nền khi scene bị hủy
+		BackgroundRunner.disableBackgroundRunning()
+	}
 
 	protected initChoiceBtn() {
 		this.getChoiceBtn(this.rockBtnNode)?.onClick(() => {
@@ -137,6 +159,11 @@ export class GamePlayManager extends Component {
 		this.getChoiceBtn(this.paperBtnNode).interactable = paperI
 		this.getChoiceBtn(this.scissorsBtnNode).interactable = scissorsI
 	}
+	protected setChoiceBtnSelected([rockI, paperI, scissorsI]: boolean[]) {
+		this.getChoiceBtn(this.rockBtnNode).setSelected(rockI)
+		this.getChoiceBtn(this.paperBtnNode).setSelected(paperI)
+		this.getChoiceBtn(this.scissorsBtnNode).setSelected(scissorsI)
+	}
 
 	protected onClickPrimaryBtn(): void {
 		console.log('Click Ready Btn')
@@ -155,6 +182,7 @@ export class GamePlayManager extends Component {
 				this.playerB.ready()
 			}, 3000)
 		} else if (this.primaryBtn.type === 'CONFIRM') {
+			this.primaryBtn.interactable = false
 			this.clip.onAudioQueue(3) // button click
 			this.gameState = GameState.CommittingChoices
 		}
@@ -177,7 +205,10 @@ export class GamePlayManager extends Component {
 				this.countdownController.hide()
 				this.countdownController.stopCountdown()
 				this.roundResultController.hide()
+				this.setChoiceBtnSelected([false, false, false])
 				this.setChoiceBtnInteractive([false, false, false])
+				this.playerA.reset()
+				this.playerB.reset()
 				this.nav.interactable = true
 				break
 			}
@@ -187,7 +218,7 @@ export class GamePlayManager extends Component {
 				this.setChoiceBtnInteractive([true, true, true])
 				this.onClickChoice(this.playerA.makeRandomChoice())
 				this.countdownController.show()
-				this.countdownController.setTime(5)
+				this.countdownController.setTime(11)
 				this.countdownController.startCoundown(() => {
 					// when countdown finish
 					this.onCountdownFinished()
@@ -209,6 +240,7 @@ export class GamePlayManager extends Component {
 				this.nav.interactable = false
 				this.roundResultController.hide()
 				this.setChoiceBtnInteractive([false, false, false])
+				this.setChoiceBtnSelected([false, false, false])
 
 				if (this.playerA.choice !== Choice.None && this.playerB.choice !== Choice.None) {
 					let result: 'WIN' | 'LOSE' | 'DRAW' = 'WIN'
@@ -225,9 +257,11 @@ export class GamePlayManager extends Component {
 					}
 
 					this.roundResultController.show({
-						playerAChoice: this.playerA.choice,
-						playerBChoice: this.playerB.choice,
+						playerA: this.playerA,
+						playerB: this.playerB,
 						status: result,
+						betAmount: 5,
+						betUnitSymbol: 'tADA',
 					})
 				}
 				break
@@ -250,17 +284,11 @@ export class GamePlayManager extends Component {
 		this.playerA.setChoice(choice)
 		if (choice === Choice.None) return
 		else if (choice === Choice.Rock) {
-			this.getChoiceBtn(this.rockBtnNode).setSelected(true)
-			this.getChoiceBtn(this.paperBtnNode).setSelected(false)
-			this.getChoiceBtn(this.scissorsBtnNode).setSelected(false)
+			this.setChoiceBtnSelected([true, false, false])
 		} else if (choice === Choice.Paper) {
-			this.getChoiceBtn(this.paperBtnNode).setSelected(true)
-			this.getChoiceBtn(this.rockBtnNode).setSelected(false)
-			this.getChoiceBtn(this.scissorsBtnNode).setSelected(false)
+			this.setChoiceBtnSelected([false, true, false])
 		} else if (choice === Choice.Scissors) {
-			this.getChoiceBtn(this.scissorsBtnNode).setSelected(true)
-			this.getChoiceBtn(this.paperBtnNode).setSelected(false)
-			this.getChoiceBtn(this.rockBtnNode).setSelected(false)
+			this.setChoiceBtnSelected([false, false, true])
 		}
 		this.primaryBtn.interactable = true
 	}

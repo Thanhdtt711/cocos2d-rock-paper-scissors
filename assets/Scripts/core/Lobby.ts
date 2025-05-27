@@ -16,6 +16,7 @@ import { GameInteraction } from '../common/web-interaction'
 import { Room } from '../common/types/room.type'
 import { LobbyItemScript } from './prefabs/LobbyItemScript'
 import { AudioControl } from './AudioControl'
+import { PlayerManager } from './PlayerManager'
 
 @ccclass('Lobby')
 export class Lobby extends Component {
@@ -42,6 +43,12 @@ export class Lobby extends Component {
 
 	@property(RichText)
 	loadingText: RichText | null = null
+
+	@property({
+		type: PlayerManager,
+		tooltip: 'add player manager',
+	})
+	playerManager: PlayerManager | null = null
 
 	//
 	lobbyItems: Room[] = []
@@ -87,10 +94,68 @@ export class Lobby extends Component {
 					code: '5678',
 					roundTimeMillis: 60000,
 				},
+				{
+					name: 'Lobby 4',
+					betAmount: '1000 t₳',
+					requiredPassword: true,
+					isLocked: true,
+					code: '5678',
+					roundTimeMillis: 60000,
+				},
+				{
+					name: 'Lobby 5',
+					betAmount: '10,000 t₳',
+					requiredPassword: true,
+					isLocked: true,
+					code: '5678',
+					roundTimeMillis: 60000,
+				},
+				{
+					name: 'Lobby 6',
+					betAmount: '100,000 t₳',
+					requiredPassword: false,
+					isLocked: false,
+					code: '5678',
+					roundTimeMillis: 60000,
+				},
+				{
+					name: 'Lobby 7',
+					betAmount: '2,000,000 t₳',
+					requiredPassword: true,
+					isLocked: true,
+					code: '5678',
+					roundTimeMillis: 60000,
+				},
+				{
+					name: 'Lobby 8',
+					betAmount: '10,000,000 t₳',
+					requiredPassword: true,
+					isLocked: true,
+					code: '5678',
+					roundTimeMillis: 60000,
+				},
+				{
+					name: 'Lobby 9',
+					betAmount: '100,000,000 t₳',
+					requiredPassword: true,
+					isLocked: true,
+					code: '5678',
+					roundTimeMillis: 60000,
+				},
 			])
 			;(window as any).lobby.renderLobbyList()
 			;(window as any).lobby.setLoading(false)
 		}, 3000)
+	}
+
+	protected onEnable() {
+		this.playerManager?.setUserInfo({
+			username: 'Ania9 Vtc',
+			walletAddress: 'addr_tes..ab1',
+			coin: 280,
+			coinSymbol: 'tADA',
+			avatar: 'https://i.imgur.com/74W9HOS.jpeg',
+		})
 	}
 
 	protected createLobby(): void {

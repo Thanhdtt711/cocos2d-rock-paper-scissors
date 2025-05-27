@@ -30,8 +30,8 @@ export class CountdownController extends Component {
 
 	private _digitSlots: Node[] = []
 	private _isRunning: boolean = false
-	private _initTime: number = 30
-	private _currentTime: number = 30 // Thời gian đếm ngược ban đầu
+	private _startTime: number = performance.now() // milliseconds
+	private _duration: number = 30 // Thời gian đếm ngược ban đầu: seconds
 	private _timer: any = null // Biến đếm thời gian
 	private _emitter = mitt()
 	private _onFinishCb: () => void
@@ -63,8 +63,8 @@ export class CountdownController extends Component {
 			console.log('Time is too long, max is 999')
 			return
 		}
-		this._initTime = num
-		this._currentTime = num
+		this._startTime = performance.now()
+		this._duration = num
 		this.updateDisplay()
 	}
 
@@ -72,19 +72,14 @@ export class CountdownController extends Component {
 		if (!this._isRunning) {
 			this._isRunning = true
 			this.clip.onAudioLoop(4) // loop tictac
-			this.schedule(this.updateTimer, 1.0) // Cập nhật mỗi giây
+			this._startTime = performance.now()
+			this.schedule(this.updateTimer, 0.1) // Cập nhật mỗi giây
 			this._onFinishCb = onfinish
 		}
 	}
 
 	protected updateTimer(dt: number): void {
-		this._currentTime -= dt
 		this.updateDisplay()
-		if (this._currentTime <= 0) {
-			this.stopCountdown()
-			this._emitter.emit('countdown', { type: 'onCountdownEnd' })
-			this._onFinishCb?.()
-		}
 	}
 
 	public stopCountdown() {
@@ -94,17 +89,18 @@ export class CountdownController extends Component {
 	}
 
 	protected updateDisplay() {
-		const timeStr = Math.abs(this._currentTime).toFixed(0).toString()
+		const elapsed = (performance.now() - this._startTime) / 1000
+		const remainingTime = Math.max(0, Math.floor(this._duration - elapsed))
+		const timeStr = Math.abs(remainingTime).toFixed(0).toString()
 		let countdownText = ''
 
-		if (this._initTime < 100) {
+		if (this._duration < 100) {
 			countdownText = timeStr.padStart(2, '0')
 			this.digitSlot3.active = false
 		} else {
 			countdownText = timeStr.padStart(3, '0')
 			this.digitSlot3.active = true
 		}
-		console.log('coundown: ', countdownText)
 		for (let i = 0; i < countdownText.length; i++) {
 			const digit = parseInt(countdownText[i])
 			const numberNode = this._digitSlots[i]
@@ -115,6 +111,11 @@ export class CountdownController extends Component {
 				}
 			}
 		}
+		if (remainingTime <= 0) {
+			this.stopCountdown()
+			this._emitter.emit('countdown', { type: 'onCountdownEnd' })
+			this._onFinishCb?.()
+		}
 	}
 
 	public onFinish(cb: () => void) {
@@ -123,6 +124,7 @@ export class CountdownController extends Component {
 
 	// Lấy thời gian hiện tại
 	public getCurrentTime(): number {
-		return this._currentTime
+		const elapsed = (performance.now() - this._startTime) / 1000
+		return Math.max(0, this._duration - elapsed)
 	}
 }

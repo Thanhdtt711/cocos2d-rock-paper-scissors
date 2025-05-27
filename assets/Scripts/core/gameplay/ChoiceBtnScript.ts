@@ -35,12 +35,12 @@ export class ChoiceBtnScript extends Component {
 	update(deltaTime: number) {}
 
 	public setSelected(value: boolean) {
-		if (!this._interactable) return
-
 		this.isSelected = value
 		if (!this.effectNode) return
 		this.effectNode.active = this.isSelected
-		this.audioControl.onAudioQueue(3) // swoosh
+		if (this.isSelected) {
+			this.audioControl.onAudioQueue(3) // swoosh
+		}
 	}
 
 	onClick(cb: () => void) {

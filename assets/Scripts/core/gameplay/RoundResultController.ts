@@ -1,13 +1,19 @@
 import { _decorator, Component, math, Node, Sprite, SpriteFrame, tween } from 'cc'
 import { Choice } from '../../common/types/choice.type'
 import { AudioControl } from '../AudioControl'
+import { ModalResult } from './ModalResult'
+import { ResultCard } from './ResultCard'
+import { ChoiceFrame } from '../prefabs/ChoiceFrame'
+import { Player } from './Player'
 const { ccclass, property } = _decorator
 
 type ChoiceType = Choice.Rock | Choice.Paper | Choice.Scissors
 type ShowOptions = {
-	playerAChoice: ChoiceType
-	playerBChoice: ChoiceType
+	playerA: Player
+	playerB: Player
 	status: 'WIN' | 'LOSE' | 'DRAW'
+	betAmount: number
+	betUnitSymbol: string
 }
 
 @ccclass('RoundResultController')
@@ -35,12 +41,35 @@ export class RoundResultController extends Component {
 	@property(SpriteFrame)
 	drawSpriteFrame: SpriteFrame
 
-	@property(Node)
-	playerAChoiceNode: Node | null = null
-	@property(Node)
-	playerBChoiceNode: Node | null = null
+	@property({
+		type: ChoiceFrame,
+		tooltip: 'add choice frame for player A',
+	})
+	playerAChoiceFrame: ChoiceFrame | null = null
+	@property({
+		type: ChoiceFrame,
+		tooltip: 'add choice frame for player B',
+	})
+	playerBChoiceFrame: ChoiceFrame | null = null
 	@property(Node)
 	statusNode: Node | null = null
+
+	@property({
+		type: ModalResult,
+		tooltip: 'add modal result node',
+	})
+	modalResult: ModalResult | null = null
+
+	@property({
+		type: ResultCard,
+		tooltip: 'add card player A node',
+	})
+	cardPlayerA: ResultCard | null = null
+	@property({
+		type: ResultCard,
+		tooltip: 'add card player B node',
+	})
+	cardPlayerB: ResultCard | null = null
 
 	@property({
 		type: AudioControl,
@@ -48,23 +77,11 @@ export class RoundResultController extends Component {
 	})
 	public clip: AudioControl
 
-	private _choiceMapper: Record<ChoiceType, { enabled: SpriteFrame; disabled: SpriteFrame }>
-
 	onEnable() {
-		this._choiceMapper = {
-			[Choice.Rock]: {
-				enabled: this.choiceSpriteFrames[0],
-				disabled: this.disabledChoiceSpriteFrames[0],
-			},
-			[Choice.Paper]: {
-				enabled: this.choiceSpriteFrames[1],
-				disabled: this.disabledChoiceSpriteFrames[1],
-			},
-			[Choice.Scissors]: {
-				enabled: this.choiceSpriteFrames[2],
-				disabled: this.disabledChoiceSpriteFrames[2],
-			},
-		}
+		this.modalResult && (this.modalResult.node.active = false)
+		this.modalResult?.node.on('replay', () => {
+			this.node.emit('replay')
+		})
 	}
 
 	update(deltaTime: number) {}
@@ -77,18 +94,55 @@ export class RoundResultController extends Component {
 			.start()
 		if (options.status === 'WIN') {
 			this.clip.onAudioQueue(0) // win
-			this.showChoice(options.playerAChoice, this.playerAChoiceNode, false)
-			this.showChoice(options.playerBChoice, this.playerBChoiceNode, true)
+			this.playerAChoiceFrame.showChoice(options.playerA.choice, false)
+			this.playerBChoiceFrame.showChoice(options.playerB.choice, true)
 		} else if (options.status === 'DRAW') {
 			this.clip.onAudioQueue(1) // draw
-			this.showChoice(options.playerAChoice, this.playerAChoiceNode, false)
-			this.showChoice(options.playerBChoice, this.playerBChoiceNode, false)
+			this.playerAChoiceFrame.showChoice(options.playerA.choice, false)
+			this.playerBChoiceFrame.showChoice(options.playerB.choice, false)
 		} else {
 			this.clip.onAudioQueue(2) // lose
-			this.showChoice(options.playerAChoice, this.playerAChoiceNode, true)
-			this.showChoice(options.playerBChoice, this.playerBChoiceNode, false)
+			this.playerAChoiceFrame.showChoice(options.playerA.choice, true)
+			this.playerBChoiceFrame.showChoice(options.playerB.choice, false)
 		}
 		this.showStatus(options.status)
+
+		// Example: win => 'win 5 tADA'
+		// Example: lose => 'lose 5 tADA'
+		// Example: draw => 'draw'
+		const betAmountMsg = `${options.betAmount} ${options.betUnitSymbol}`
+		const msgA =
+			options.status === 'DRAW' ? 'draw' : options.status.toLowerCase() + ' ' + betAmountMsg
+		const msgB =
+			options.status === 'WIN'
+				? 'lose ' + betAmountMsg
+				: options.status === 'LOSE'
+				? 'win ' + betAmountMsg
+				: 'draw'
+		this.cardPlayerA?.init(
+			{
+				username: options.playerA.userInfo.username,
+				walletAddress: options.playerA.userInfo.walletAddress,
+				choice: options.playerA.choice,
+				messageText: `${msgA}`,
+				avatarUrl: options.playerA.userInfo.avatar,
+			},
+			options.status
+		)
+		this.cardPlayerB?.init(
+			{
+				username: options.playerB.userInfo.username,
+				walletAddress: options.playerB.userInfo.walletAddress,
+				choice: options.playerB.choice,
+				messageText: `${msgB}`,
+				avatarUrl: options.playerB.userInfo.avatar,
+			},
+			options.status === 'WIN' ? 'LOSE' : options.status === 'LOSE' ? 'WIN' : 'DRAW'
+		)
+		setTimeout(() => {
+			this.modalResult.show()
+		}, 3000)
+		//==========================================================================================
 	}
 
 	protected showStatus(status: ShowOptions['status']) {
@@ -102,13 +156,6 @@ export class RoundResultController extends Component {
 		} else {
 			sprite.spriteFrame = this.loseSpriteFrame
 		}
-	}
-
-	protected showChoice(choice: ChoiceType, node: Node | null, isDisabled: boolean = false) {
-		if (!node) return
-		const sprite = node.getComponent(Sprite)
-		if (!sprite) return
-		sprite.spriteFrame = this._choiceMapper[choice][isDisabled ? 'disabled' : 'enabled']
 	}
 
 	public hide() {

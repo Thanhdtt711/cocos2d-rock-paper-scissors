@@ -3,4 +3,5 @@ export type User = {
 	walletAddress: string
 	avatar: string
 	coin: number
+	coinSymbol: string
 }

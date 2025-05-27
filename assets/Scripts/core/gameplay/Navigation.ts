@@ -15,8 +15,7 @@ export class Navigation extends Component {
 	update(deltaTime: number) {}
 
 	protected onClickBackBtn(): void {
-		console.log('Click Back Btn')
-		// director.loadScene('game-lobby')
+		this.node.emit('back')
 	}
 
 	public set interactable(value: boolean) {

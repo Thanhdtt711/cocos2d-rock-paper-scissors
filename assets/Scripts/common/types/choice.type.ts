@@ -1,6 +1,6 @@
 export enum Choice {
-	None = 0,
-	Rock = 1,
-	Paper = 2,
-	Scissors = 3,
+	None = 'NONE',
+	Rock = 'ROCK',
+	Paper = 'PAPER',
+	Scissors = 'SCISSORS',
 }

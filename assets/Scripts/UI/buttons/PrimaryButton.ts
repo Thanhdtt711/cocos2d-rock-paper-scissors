@@ -9,19 +9,49 @@ export class PrimaryButton extends Component {
 	@property(Button)
 	button: Button | null = null
 
-	protected _labelColor = {
-		default: new Color('#256605'),
-		disabled: new Color('#999999'),
-		hovered: new Color('#499722'),
-		pressed: new Color('#499722'),
-	}
+	@property({
+		type: Color,
+		tooltip: 'default text color',
+		group: `Label's color`,
+	})
+	defaultColor: Color = new Color('#256605')
+	@property({
+		type: Color,
+		tooltip: 'disabled text color',
+		group: `Label's color`,
+	})
+	disabledColor: Color = new Color('#999999')
+	@property({
+		type: Color,
+		tooltip: 'hovered text color',
+		group: `Label's color`,
+	})
+	hoveredColor: Color = new Color('#499722')
+	@property({
+		type: Color,
+		tooltip: 'pressed text color',
+		group: `Label's color`,
+	})
+	pressedColor: Color = new Color('#499722')
+	@property({
+		type: Color,
+		tooltip: 'default outline color',
+		group: `Label's outline color`,
+	})
+	defaultOutlineColor: Color = new Color('#499722')
+	@property({
+		type: Color,
+		tooltip: 'disabled outline color',
+		group: `Label's outline color`,
+	})
+	disabledOutlineColor: Color = new Color('#999999')
 
 	start() {
 		this.node.on(
 			Node.EventType.TOUCH_MOVE,
 			() => {
 				if (this.interactable) {
-					this.label.color = this._labelColor.hovered
+					this.label.color = this.hoveredColor
 				}
 			},
 			this
@@ -30,11 +60,12 @@ export class PrimaryButton extends Component {
 			Node.EventType.TOUCH_END,
 			() => {
 				if (this.interactable) {
-					this.label.color = this._labelColor.pressed
+					this.label.color = this.pressedColor
 				}
 			},
 			this
 		)
+		this.interactable = this.button.interactable
 	}
 
 	update(deltaTime: number) {}
@@ -42,10 +73,12 @@ export class PrimaryButton extends Component {
 	public set interactable(value: boolean) {
 		if (value) {
 			this.button.interactable = true
-			this.label.color = this._labelColor.default
+			this.label.color = this.defaultColor
+			this.label.outlineColor = this.defaultOutlineColor
 		} else {
 			this.button.interactable = false
-			this.label.color = this._labelColor.disabled
+			this.label.color = this.disabledColor
+			this.label.outlineColor = this.disabledOutlineColor
 		}
 	}
 	public get interactable() {

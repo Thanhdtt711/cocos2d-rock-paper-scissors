@@ -1,4 +1,4 @@
-import { _decorator, Button, Component, Node } from 'cc'
+import { _decorator, Button, Component, math, Node, tween } from 'cc'
 import { AudioControl } from '../AudioControl'
 const { ccclass, property } = _decorator
 
@@ -30,6 +30,25 @@ export class ChoiceBtnScript extends Component {
 		this.effectNode.active = this.isSelected
 
 		this.button?.node?.on(Node.EventType.TOUCH_END, this._onClickCallback, this)
+		this.button?.node?.on(
+			Node.EventType.MOUSE_ENTER,
+			() => {
+				// this.button.node.setScale(1.1, 1.1, 1)
+				tween(this.button.node)
+					.to(0.1, { scale: math.v3(1.1, 1.1, 1.1) })
+					.start()
+			},
+			this
+		)
+		this.button?.node?.on(
+			Node.EventType.MOUSE_LEAVE,
+			() => {
+				tween(this.button.node)
+					.to(0.1, { scale: math.v3(1, 1, 1) })
+					.start()
+			},
+			this
+		)
 	}
 
 	update(deltaTime: number) {}

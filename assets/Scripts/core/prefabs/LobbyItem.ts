@@ -1,10 +1,10 @@
-import { _decorator, Component, Node, RichText, UIOpacity, UITransform } from 'cc'
+import { _decorator, Button, Component, Node, RichText, UIOpacity, UITransform } from 'cc'
 import { Room } from '../../common/types/room.type'
 import { formatString } from '../../common/utils/useFormat'
 const { ccclass, property } = _decorator
 
-@ccclass('LobbyItemScript')
-export class LobbyItemScript extends Component {
+@ccclass('LobbyItem')
+export class LobbyItem extends Component {
 	@property(Node)
 	lockedIcon: Node | null = null
 
@@ -14,11 +14,17 @@ export class LobbyItemScript extends Component {
 	@property(RichText)
 	lobbyBetAmountText: RichText | null = null
 
+	@property(Button)
+	joinButton: Button | null = null
+
 	// Internal data
 	roomData: Room | null = null
 
-	start() {
-		// this.lockedIcon && (this.lockedIcon.active = false)
+	protected onEnable(): void {
+		if (!this.joinButton) {
+			return
+		}
+		this.joinButton.node.on(Node.EventType.TOUCH_END, this.onClickJoinButton, this)
 	}
 
 	onLoad() {
@@ -38,4 +44,8 @@ export class LobbyItemScript extends Component {
 	}
 
 	update(deltaTime: number) {}
+
+	protected onClickJoinButton(): void {
+		this.node.emit('join-lobby', this.roomData)
+	}
 }

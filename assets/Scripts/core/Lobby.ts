@@ -14,7 +14,7 @@ const { ccclass, property } = _decorator
 
 import { GameInteraction } from '../common/web-interaction'
 import { Room } from '../common/types/room.type'
-import { LobbyItemScript } from './prefabs/LobbyItemScript'
+import { LobbyItem } from './prefabs/LobbyItem'
 import { AudioControl } from './AudioControl'
 import { PlayerManager } from './PlayerManager'
 
@@ -145,7 +145,7 @@ export class Lobby extends Component {
 			])
 			;(window as any).lobby.renderLobbyList()
 			;(window as any).lobby.setLoading(false)
-		}, 3000)
+		}, 1000)
 	}
 
 	protected onEnable() {
@@ -162,8 +162,9 @@ export class Lobby extends Component {
 		console.log('Create Lobby')
 	}
 
-	protected joinLobby(): void {
-		console.log('Join Lobby')
+	protected joinLobby(roomData: Room): void {
+		console.log('Join Lobby', roomData)
+		director.loadScene('game-play')
 	}
 
 	renderLobbyList(): void {
@@ -219,17 +220,10 @@ export class Lobby extends Component {
 	}
 
 	protected initLobbyItem(node: Node, data: Room): void {
-		node.on(
-			Node.EventType.TOUCH_END,
-			() => {
-				console.log('Join Lobby', data)
-				director.loadScene('game-play')
-			},
-			this
-		)
-		const lobbyItemScript = node.getComponentInChildren(LobbyItemScript)
+		const lobbyItemScript = node.getComponent(LobbyItem)
 		if (lobbyItemScript) {
 			lobbyItemScript.roomData = data
+			lobbyItemScript.node.on('join-lobby', this.joinLobby, this)
 		}
 	}
 

@@ -24,6 +24,6 @@ export class GameInteraction implements InteractionInstance {
 		return sys.isBrowser ? (window as any)[key] : null
 	}
 
-	player = GameInteraction.getInstance('player') as Readonly<PlayerInteraction>
-	lobby = GameInteraction.getInstance('lobby') as Readonly<LobbyInteractionImpl>
+	player = GameInteraction.getInstance('player') as PlayerInteraction
+	lobby = GameInteraction.getInstance('lobby') as LobbyInteractionImpl
 }

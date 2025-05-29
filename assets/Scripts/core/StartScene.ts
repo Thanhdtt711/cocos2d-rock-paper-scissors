@@ -8,6 +8,7 @@ import {
 	Node,
 	ProgressBar,
 	resources,
+	sys,
 	Toggle,
 } from 'cc'
 import { add } from 'lodash-es'
@@ -50,7 +51,6 @@ export class StartScene extends Component {
 	start() {
 		this.startGameBtn?.node.on(Node.EventType.TOUCH_END, this.initGame, this)
 		this.agreeTermToggle?.node?.on(Node.EventType.TOUCH_END, this.onClickAgreeTerm, this)
-
 		new GameInteraction()
 	}
 
@@ -124,7 +124,17 @@ export class StartScene extends Component {
 				}
 				this.loadingLabel.string = 'Click start now to play'
 				this.loadingLabel.getComponent(Animation)?.play()
-				console.log('Preload done', assets)
+				this.loadingBar.progress = 1
+				if (sys.isBrowser) {
+					console.log('[Cocos Script] Send message to parent')
+					window.parent.postMessage(
+						{
+							type: 'status',
+							data: 'loaded',
+						},
+						window.location.origin
+					)
+				}
 			}
 		)
 	}

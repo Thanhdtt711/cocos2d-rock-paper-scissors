@@ -13,18 +13,18 @@ export class LobbyInteractionImpl extends BaseInteraction {
 	}
 
 	createLobby() {
-		console.log('Create lobby interaction')
+		console.log('[Default Interaction]')
 	}
 	joinLobby() {
-		console.log('Join lobby interaction')
+		console.log('[Default Interaction]')
 	}
 	setLobbyItems(items: Room[]) {
-		console.log('Set lobby items interaction', items)
+		console.log('[Default Interaction]', items)
 	}
 	renderLobbyList() {
-		console.log('Render lobby list interaction')
+		console.log('[Default Interaction]')
 	}
 	setLoading(isLoading: boolean) {
-		console.log('Set loading interaction', isLoading)
+		console.log('[Default Interaction]', isLoading)
 	}
 }

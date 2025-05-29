@@ -11,25 +11,19 @@ export type InstanceType = PlayerInteraction | LobbyInteractionImpl | null
 
 export class GameInteraction implements InteractionInstance {
 	static getInstance(key: keyof InteractionInstance): InstanceType {
-		if (key === 'player') {
-			if (!(window as any).player) {
-				;(window as any).player = new PlayerInteractionImpl()
-			}
-			return sys.isBrowser ? (window as any).player : null
-		} else if (key === 'lobby') {
-			if (!(window as any).lobby) {
-				;(window as any).lobby = new LobbyInteractionImpl()
-			}
-			return sys.isBrowser ? (window as any).lobby : null
+		const instanceMapper = {
+			player: new PlayerInteractionImpl(),
+			lobby: new LobbyInteractionImpl(),
 		}
-		return null
+		const instance = instanceMapper[key]
+		if (!instance) return null
+
+		if (!(window as any)[key]) {
+			;(window as any)[key] = instance
+		}
+		return sys.isBrowser ? (window as any)[key] : null
 	}
 
-	public get player() {
-		return GameInteraction.getInstance('player') as PlayerInteraction
-	}
-
-	public get lobby() {
-		return GameInteraction.getInstance('lobby') as LobbyInteractionImpl
-	}
+	player = GameInteraction.getInstance('player') as Readonly<PlayerInteraction>
+	lobby = GameInteraction.getInstance('lobby') as Readonly<LobbyInteractionImpl>
 }

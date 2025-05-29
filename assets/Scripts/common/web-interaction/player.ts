@@ -7,9 +7,9 @@ export interface PlayerInteraction {
 
 export class PlayerInteractionImpl implements PlayerInteraction {
 	setAvatar(avatarUrl: string) {
-		console.log('Set avatar', avatarUrl)
+		console.log('[Default Interaction]', avatarUrl)
 	}
 	setUserInfo(data: User) {
-		console.log('Set user info', data)
+		console.log('[Default Interaction]', data)
 	}
 }

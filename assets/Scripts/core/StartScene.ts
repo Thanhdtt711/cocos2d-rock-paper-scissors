@@ -13,6 +13,7 @@ import {
 import { add } from 'lodash-es'
 import { AudioControl } from './AudioControl'
 import { PrimaryButton } from '../UI/buttons/PrimaryButton'
+import { GameInteraction } from '../common/web-interaction'
 const { ccclass, property } = _decorator
 
 declare const io: any
@@ -49,6 +50,8 @@ export class StartScene extends Component {
 	start() {
 		this.startGameBtn?.node.on(Node.EventType.TOUCH_END, this.initGame, this)
 		this.agreeTermToggle?.node?.on(Node.EventType.TOUCH_END, this.onClickAgreeTerm, this)
+
+		new GameInteraction()
 	}
 
 	update(deltaTime: number) {

@@ -1,0 +1,286 @@
+{
+  "ver": "1.0.6",
+  "importer": "bitmap-font",
+  "imported": true,
+  "uuid": "15917693-edd8-47ef-823e-d601e020d147",
+  "files": [
+    ".json"
+  ],
+  "subMetas": {},
+  "userData": {
+    "_fntConfig": {
+      "commonHeight": 58,
+      "fontSize": 32,
+      "atlasName": "so@export.png",
+      "fontDefDictionary": {
+        "9": {
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "xOffset": 0,
+          "yOffset": 0,
+          "xAdvance": 120
+        },
+        "32": {
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "xOffset": 0,
+          "yOffset": 0,
+          "xAdvance": 15
+        },
+        "43": {
+          "rect": {
+            "x": 151,
+            "y": 122,
+            "width": 31,
+            "height": 29
+          },
+          "xOffset": 0,
+          "yOffset": 29,
+          "xAdvance": 27
+        },
+        "45": {
+          "rect": {
+            "x": 152,
+            "y": 91,
+            "width": 23,
+            "height": 17
+          },
+          "xOffset": 0,
+          "yOffset": 32,
+          "xAdvance": 19
+        },
+        "46": {
+          "rect": {
+            "x": 153,
+            "y": 152,
+            "width": 17,
+            "height": 16
+          },
+          "xOffset": 0,
+          "yOffset": 42,
+          "xAdvance": 13
+        },
+        "48": {
+          "rect": {
+            "x": 80,
+            "y": 130,
+            "width": 36,
+            "height": 37
+          },
+          "xOffset": 0,
+          "yOffset": 21,
+          "xAdvance": 32
+        },
+        "49": {
+          "rect": {
+            "x": 152,
+            "y": 54,
+            "width": 24,
+            "height": 36
+          },
+          "xOffset": 0,
+          "yOffset": 22,
+          "xAdvance": 20
+        },
+        "50": {
+          "rect": {
+            "x": 117,
+            "y": 130,
+            "width": 33,
+            "height": 37
+          },
+          "xOffset": 0,
+          "yOffset": 21,
+          "xAdvance": 29
+        },
+        "51": {
+          "rect": {
+            "x": 119,
+            "y": 54,
+            "width": 32,
+            "height": 37
+          },
+          "xOffset": 0,
+          "yOffset": 21,
+          "xAdvance": 28
+        },
+        "52": {
+          "rect": {
+            "x": 46,
+            "y": 92,
+            "width": 36,
+            "height": 37
+          },
+          "xOffset": 0,
+          "yOffset": 21,
+          "xAdvance": 32
+        },
+        "53": {
+          "rect": {
+            "x": 119,
+            "y": 168,
+            "width": 33,
+            "height": 38
+          },
+          "xOffset": 0,
+          "yOffset": 21,
+          "xAdvance": 29
+        },
+        "54": {
+          "rect": {
+            "x": 48,
+            "y": 54,
+            "width": 36,
+            "height": 37
+          },
+          "xOffset": 0,
+          "yOffset": 21,
+          "xAdvance": 32
+        },
+        "55": {
+          "rect": {
+            "x": 85,
+            "y": 54,
+            "width": 33,
+            "height": 37
+          },
+          "xOffset": 0,
+          "yOffset": 21,
+          "xAdvance": 29
+        },
+        "56": {
+          "rect": {
+            "x": 83,
+            "y": 168,
+            "width": 35,
+            "height": 38
+          },
+          "xOffset": 0,
+          "yOffset": 21,
+          "xAdvance": 31
+        },
+        "57": {
+          "rect": {
+            "x": 43,
+            "y": 130,
+            "width": 36,
+            "height": 37
+          },
+          "xOffset": 0,
+          "yOffset": 21,
+          "xAdvance": 32
+        },
+        "58": {
+          "rect": {
+            "x": 153,
+            "y": 169,
+            "width": 17,
+            "height": 29
+          },
+          "xOffset": 0,
+          "yOffset": 29,
+          "xAdvance": 13
+        },
+        "65": {
+          "rect": {
+            "x": 0,
+            "y": 54,
+            "width": 47,
+            "height": 37
+          },
+          "xOffset": 0,
+          "yOffset": 21,
+          "xAdvance": 43
+        },
+        "67": {
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 211,
+            "height": 53
+          },
+          "xOffset": 0,
+          "yOffset": 6,
+          "xAdvance": 207
+        },
+        "72": {
+          "rect": {
+            "x": 42,
+            "y": 168,
+            "width": 40,
+            "height": 37
+          },
+          "xOffset": 0,
+          "yOffset": 21,
+          "xAdvance": 36
+        },
+        "75": {
+          "rect": {
+            "x": 0,
+            "y": 130,
+            "width": 42,
+            "height": 37
+          },
+          "xOffset": 0,
+          "yOffset": 21,
+          "xAdvance": 38
+        },
+        "77": {
+          "rect": {
+            "x": 0,
+            "y": 92,
+            "width": 45,
+            "height": 37
+          },
+          "xOffset": 0,
+          "yOffset": 21,
+          "xAdvance": 41
+        },
+        "78": {
+          "rect": {
+            "x": 0,
+            "y": 168,
+            "width": 41,
+            "height": 37
+          },
+          "xOffset": 0,
+          "yOffset": 21,
+          "xAdvance": 37
+        },
+        "80": {
+          "rect": {
+            "x": 83,
+            "y": 92,
+            "width": 35,
+            "height": 37
+          },
+          "xOffset": 0,
+          "yOffset": 21,
+          "xAdvance": 31
+        },
+        "88": {
+          "rect": {
+            "x": 119,
+            "y": 92,
+            "width": 32,
+            "height": 29
+          },
+          "xOffset": 0,
+          "yOffset": 29,
+          "xAdvance": 28
+        }
+      },
+      "kerningDict": {}
+    },
+    "fontSize": 32,
+    "textureUuid": "92fd1c3a-7c4d-4af2-b8ac-eb5db7ab6113"
+  }
+}

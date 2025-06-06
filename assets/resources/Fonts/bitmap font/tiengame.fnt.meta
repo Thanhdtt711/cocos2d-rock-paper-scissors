@@ -1,0 +1,165 @@
+{
+  "ver": "1.0.6",
+  "importer": "bitmap-font",
+  "imported": true,
+  "uuid": "a346cd15-f531-4f8b-b9b3-14dba6056836",
+  "files": [
+    ".json"
+  ],
+  "subMetas": {},
+  "userData": {
+    "_fntConfig": {
+      "commonHeight": 38,
+      "fontSize": 32,
+      "atlasName": "tiengame.png",
+      "fontDefDictionary": {
+        "9": {
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "xOffset": 0,
+          "yOffset": 0,
+          "xAdvance": 200
+        },
+        "32": {
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 0,
+            "height": 0
+          },
+          "xOffset": 0,
+          "yOffset": 0,
+          "xAdvance": 25
+        },
+        "46": {
+          "rect": {
+            "x": 21,
+            "y": 0,
+            "width": 7,
+            "height": 9
+          },
+          "xOffset": 0,
+          "yOffset": 28,
+          "xAdvance": 10
+        },
+        "48": {
+          "rect": {
+            "x": 0,
+            "y": 28,
+            "width": 19,
+            "height": 29
+          },
+          "xOffset": 0,
+          "yOffset": 9,
+          "xAdvance": 22
+        },
+        "49": {
+          "rect": {
+            "x": 99,
+            "y": 0,
+            "width": 13,
+            "height": 28
+          },
+          "xOffset": 0,
+          "yOffset": 9,
+          "xAdvance": 16
+        },
+        "50": {
+          "rect": {
+            "x": 60,
+            "y": 29,
+            "width": 19,
+            "height": 28
+          },
+          "xOffset": 0,
+          "yOffset": 9,
+          "xAdvance": 22
+        },
+        "51": {
+          "rect": {
+            "x": 80,
+            "y": 29,
+            "width": 18,
+            "height": 29
+          },
+          "xOffset": 0,
+          "yOffset": 9,
+          "xAdvance": 21
+        },
+        "52": {
+          "rect": {
+            "x": 60,
+            "y": 0,
+            "width": 19,
+            "height": 28
+          },
+          "xOffset": 0,
+          "yOffset": 9,
+          "xAdvance": 22
+        },
+        "53": {
+          "rect": {
+            "x": 80,
+            "y": 0,
+            "width": 18,
+            "height": 28
+          },
+          "xOffset": 0,
+          "yOffset": 10,
+          "xAdvance": 21
+        },
+        "54": {
+          "rect": {
+            "x": 40,
+            "y": 30,
+            "width": 19,
+            "height": 29
+          },
+          "xOffset": 0,
+          "yOffset": 9,
+          "xAdvance": 22
+        },
+        "55": {
+          "rect": {
+            "x": 0,
+            "y": 0,
+            "width": 20,
+            "height": 27
+          },
+          "xOffset": 0,
+          "yOffset": 10,
+          "xAdvance": 23
+        },
+        "56": {
+          "rect": {
+            "x": 40,
+            "y": 0,
+            "width": 19,
+            "height": 29
+          },
+          "xOffset": 0,
+          "yOffset": 9,
+          "xAdvance": 22
+        },
+        "57": {
+          "rect": {
+            "x": 20,
+            "y": 28,
+            "width": 19,
+            "height": 29
+          },
+          "xOffset": 0,
+          "yOffset": 9,
+          "xAdvance": 22
+        }
+      },
+      "kerningDict": {}
+    },
+    "fontSize": 32,
+    "textureUuid": "4597aeaa-5d26-4769-981b-2e93a9885f3a"
+  }
+}

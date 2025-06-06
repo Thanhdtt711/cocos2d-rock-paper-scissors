@@ -123,7 +123,7 @@ export class GamePlayManager extends Component {
 		this.playerB.initData({
 			username: 'Sơn Tùng M-TP',
 			walletAddress: 'addr_test1a...af9',
-			coin: 124,
+			coin: 124888,
 			coinSymbol: 'tADA',
 			avatar: 'https://i.imgur.com/BWmtZzG.jpeg',
 		})
